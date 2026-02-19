@@ -6,8 +6,8 @@ const ASSETS = [
   '/',
   '/index.html',
   '/manifest.json',
-  '/icons/icon-192x192.png',
-  '/icons/icon-512x512.png',
+  '/icon-192x192.png',
+  '/icon-512x512.png',
   'https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap'
 ];
 
@@ -68,8 +68,8 @@ self.addEventListener('push', event => {
   const data = event.data ? event.data.json() : {};
   self.registration.showNotification(data.title || 'TaskFlow', {
     body: data.body || 'You have a reminder!',
-    icon: '/icons/icon-192x192.png',
-    badge: '/icons/icon-72x72.png',
+    icon: '/icon-192x192.png',
+    badge: '/icon-72x72.png',
     vibrate: [200, 100, 200]
   });
 });
