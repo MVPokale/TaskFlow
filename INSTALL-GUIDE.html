@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TaskFlow — Install Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#080808;color:#f0f0f0;font-family:'DM Sans',sans-serif;max-width:680px;margin:0 auto;padding:24px 20px 60px;}
+h1{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;background:linear-gradient(135deg,#4f9eff,#3ddc84);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px;}
+.subtitle{color:#999;font-size:.95rem;margin-bottom:32px;}
+.step-card{background:#0f0f0f;border:1px solid #2a2a2a;border-radius:18px;padding:20px;margin-bottom:16px;}
+.step-num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;background:#4f9eff;color:#000;font-family:'Syne',sans-serif;font-weight:800;font-size:.82rem;margin-bottom:10px;}
+.step-title{font-family:'Syne',sans-serif;font-weight:700;font-size:1.05rem;margin-bottom:6px;}
+.step-desc{color:#999;font-size:.88rem;line-height:1.7;}
+.code-block{background:#141414;border:1px solid #333;border-radius:10px;padding:12px 14px;font-family:'JetBrains Mono',monospace;font-size:.82rem;color:#4f9eff;margin:10px 0;word-break:break-all;}
+.badge{display:inline-block;padding:3px 10px;border-radius:8px;font-size:.7rem;font-family:'JetBrains Mono',monospace;font-weight:600;margin-right:6px;margin-bottom:4px;}
+.badge-blue{background:rgba(79,158,255,.12);color:#4f9eff;}
+.badge-green{background:rgba(61,220,132,.12);color:#3ddc84;}
+.badge-orange{background:rgba(255,112,67,.12);color:#ff7043;}
+.tip{background:#0a1a2a;border:1px solid #1e3a5f;border-radius:12px;padding:12px 14px;font-size:.82rem;color:#4a7fa5;margin-top:10px;line-height:1.6;}
+.tip strong{color:#4f9eff;}
+.option-header{font-family:'Syne',sans-serif;font-weight:800;font-size:1.3rem;margin:28px 0 12px;padding-top:8px;border-top:1px solid #2a2a2a;}
+.method-tag{display:inline-block;padding:4px 12px;border-radius:20px;font-size:.72rem;font-family:'JetBrains Mono',monospace;font-weight:600;margin-bottom:12px;}
+.tag-recommended{background:rgba(61,220,132,.12);color:#3ddc84;border:1px solid rgba(61,220,132,.3);}
+.tag-advanced{background:rgba(255,112,67,.12);color:#ff7043;border:1px solid rgba(255,112,67,.3);}
+.feature-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px;}
+.feature-item{background:#141414;border:1px solid #2a2a2a;border-radius:12px;padding:12px;font-size:.82rem;color:#999;}
+.feature-item .fi{font-size:1.2rem;display:block;margin-bottom:4px;}
+.feature-item strong{display:block;color:#f0f0f0;margin-bottom:2px;font-size:.85rem;}
+a{color:#4f9eff;text-decoration:none;}
+a:hover{text-decoration:underline;}
+.logo{display:flex;align-items:center;gap:12px;margin-bottom:28px;}
+.logo-icon{width:48px;height:48px;background:#0f1a2a;border:1px solid #4f9eff;border-radius:14px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:#4f9eff;}
+</style>
+</head>
+<body>
+
+<div class="logo">
+  <div class="logo-icon">TF</div>
+  <div>
+    <h1>TaskFlow</h1>
+    <div class="subtitle">Install Guide for Manish 📱</div>
+  </div>
+</div>
+
+<div class="feature-grid" style="margin-bottom:28px;">
+  <div class="feature-item"><span class="fi">📋</span><strong>Task Manager</strong>Priorities & due dates</div>
+  <div class="feature-item"><span class="fi">🔥</span><strong>Habit Tracker</strong>Streaks & 7-day view</div>
+  <div class="feature-item"><span class="fi">💸</span><strong>Expense Tracker</strong>CSV export</div>
+  <div class="feature-item"><span class="fi">👥</span><strong>Group Split</strong>Share expenses</div>
+  <div class="feature-item"><span class="fi">📚</span><strong>Learning Log</strong>Daily knowledge</div>
+  <div class="feature-item"><span class="fi">📴</span><strong>Works Offline</strong>No internet needed</div>
+</div>
+
+<!-- ===== OPTION 1: PWA ===== -->
+<div class="option-header">Option 1 — Install as PWA App</div>
+<span class="method-tag tag-recommended">⭐ RECOMMENDED — Easiest & Free</span>
+
+<div class="step-card">
+  <div class="step-num">1</div>
+  <div class="step-title">Host the files (Free options)</div>
+  <div class="step-desc">
+    You need to host the TaskFlow folder online. Here are 3 free ways:<br><br>
+    <strong style="color:#f0f0f0;">A) GitHub Pages (Best — Free forever)</strong><br>
+    1. Go to <a href="https://github.com" target="_blank">github.com</a> and create a free account<br>
+    2. Create a new repository named <code style="background:#141414;padding:1px 5px;border-radius:4px;font-family:'JetBrains Mono',monospace;color:#4f9eff">taskflow</code><br>
+    3. Upload all files from the taskflow-pwa folder<br>
+    4. Go to Settings → Pages → Source: main branch → Save<br>
+    5. Your app URL will be: <span class="code-block">https://yourusername.github.io/taskflow/</span>
+    <br>
+    <strong style="color:#f0f0f0;">B) Netlify Drop (Instant — No account needed)</strong><br>
+    1. Go to <a href="https://app.netlify.com/drop" target="_blank">app.netlify.com/drop</a><br>
+    2. Drag and drop the entire <strong>taskflow-pwa</strong> folder<br>
+    3. Get your URL instantly (e.g. https://amazing-name-123.netlify.app)<br><br>
+    <strong style="color:#f0f0f0;">C) Vercel (Fast CDN)</strong><br>
+    1. Go to <a href="https://vercel.com" target="_blank">vercel.com</a> → Sign up free<br>
+    2. Import project → Upload folder → Deploy
+  </div>
+</div>
+
+<div class="step-card">
+  <div class="step-num">2</div>
+  <div class="step-title">Open on your Android phone</div>
+  <div class="step-desc">
+    Once hosted, open the URL on your Android phone using <strong style="color:#f0f0f0;">Chrome browser</strong>.
+    <div class="tip"><strong>Tip:</strong> Make sure you use Chrome on Android for the best PWA install experience.</div>
+  </div>
+</div>
+
+<div class="step-card">
+  <div class="step-num">3</div>
+  <div class="step-title">Install to Home Screen</div>
+  <div class="step-desc">
+    <strong style="color:#f0f0f0;">Method A — Install Banner (Automatic):</strong><br>
+    A blue banner "Install TaskFlow" will appear automatically at the bottom. Tap <strong style="color:#4f9eff">Install</strong>.<br><br>
+    <strong style="color:#f0f0f0;">Method B — Chrome Menu:</strong><br>
+    1. Tap the <strong style="color:#f0f0f0;">⋮ three dots menu</strong> in Chrome (top right)<br>
+    2. Tap <strong style="color:#f0f0f0;">"Add to Home Screen"</strong> or <strong style="color:#f0f0f0;">"Install App"</strong><br>
+    3. Tap <strong style="color:#f0f0f0;">"Install"</strong> in the popup<br>
+    4. TaskFlow icon appears on your home screen! 🎉
+    <div class="tip"><strong>Result:</strong> Opens full screen, no browser bar, works offline — feels exactly like a native Android app!</div>
+  </div>
+</div>
+
+<!-- ===== OPTION 2: APK ===== -->
+<div class="option-header">Option 2 — Convert to APK</div>
+<span class="method-tag tag-advanced">⚙️ ADVANCED — More control</span>
+
+<div class="step-card">
+  <div class="step-title">Using PWABuilder (Microsoft — Free)</div>
+  <div class="step-desc">
+    1. First host the app (see Option 1, Step 1)<br>
+    2. Go to <a href="https://www.pwabuilder.com" target="_blank">pwabuilder.com</a><br>
+    3. Enter your hosted app URL<br>
+    4. Click <strong style="color:#f0f0f0;">"Build My PWA"</strong><br>
+    5. Select <strong style="color:#f0f0f0;">Android → Download package</strong><br>
+    6. You'll get an <strong style="color:#f0f0f0;">.apk</strong> file you can install directly on your phone<br><br>
+    <strong style="color:#f0f0f0;">To install the APK on your phone:</strong><br>
+    1. Transfer the .apk to your phone<br>
+    2. Go to Settings → Security → Allow Unknown Sources (or Install Unknown Apps)<br>
+    3. Open the APK file and tap Install
+    <div class="tip"><strong>Note:</strong> PWABuilder generates a proper Android APK with your app icon, splash screen, and offline support built in.</div>
+  </div>
+</div>
+
+<div class="step-card">
+  <div class="step-title">Using Capacitor (for developers)</div>
+  <div class="step-desc">
+    If you're comfortable with command line:<br><br>
+    <div class="code-block">npm install -g @capacitor/cli<br>npx cap init TaskFlow com.manish.taskflow<br>npx cap add android<br>npx cap sync<br>npx cap open android</div>
+    Then build the APK from Android Studio.
+  </div>
+</div>
+
+<!-- ===== OPTION 3: PLAY STORE ===== -->
+<div class="option-header">Option 3 — Publish on Play Store</div>
+<span class="method-tag" style="background:rgba(187,134,252,.12);color:#bb86fc;border:1px solid rgba(187,134,252,.3);">🚀 PROFESSIONAL</span>
+
+<div class="step-card">
+  <div class="step-title">Steps to publish</div>
+  <div class="step-desc">
+    1. Create a Google Play Developer account ($25 one-time fee)<br>
+    2. Generate signed APK from PWABuilder or Capacitor<br>
+    3. Create store listing (screenshots, description, icon)<br>
+    4. Submit for review (usually 3-7 days)<br>
+    5. Publish!
+    <div class="tip"><strong>Tip:</strong> For a personal app, PWA (Option 1) is the best choice. Play Store is ideal if you want to share it publicly with others.</div>
+  </div>
+</div>
+
+<!-- ===== FILES ===== -->
+<div class="option-header" style="border-top:none;margin-top:16px;">📁 Files in your taskflow-pwa folder</div>
+<div class="step-card">
+  <div class="step-desc">
+    <div class="code-block">taskflow-pwa/
+├── index.html       ← Main app file
+├── manifest.json    ← PWA configuration
+├── sw.js            ← Service worker (offline)
+└── icons/
+    ├── icon-72x72.png
+    ├── icon-96x96.png
+    ├── icon-128x128.png
+    ├── icon-144x144.png
+    ├── icon-152x152.png
+    ├── icon-192x192.png
+    ├── icon-384x384.png
+    └── icon-512x512.png</div>
+    Upload ALL these files maintaining the same folder structure.
+  </div>
+</div>
+
+<div style="text-align:center;padding:24px 0;color:#555;font-family:'JetBrains Mono',monospace;font-size:.72rem;">
+  TaskFlow v3 · Built for Manish · Powered by ARIA
+</div>
+
+</body>
+</html>
