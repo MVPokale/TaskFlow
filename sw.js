@@ -2,12 +2,17 @@
 // Enables offline functionality and app-like experience
 
 const CACHE_NAME = 'taskflow-v5';
+const BASE = '/TaskFlow/';
 const ASSETS = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/icon-192x192.png',
-  '/icon-512x512.png',
+  //'/index.html',
+  //'/manifest.json',
+  //'/icon-192x192.png',
+  //'/icon-512x512.png',
+  BASE,
+  BASE + 'index.html',
+  BASE + 'manifest.json',
+  BASE + 'icon-192x192.png',
+  BASE + 'icon-512x512.png', 
   'https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap'
 ];
 
@@ -49,7 +54,7 @@ self.addEventListener('fetch', event => {
       }).catch(() => {
         // Return cached index.html for navigation requests when offline
         if (event.request.mode === 'navigate') {
-          return caches.match('/index.html');
+          return caches.match('/TaskFlow/index.html');
         }
       });
     })
