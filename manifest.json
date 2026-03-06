@@ -7,7 +7,7 @@
   "background_color": "#080808",
   "theme_color": "#080808",
   "orientation": "portrait",
-  "scope": "/TaskFlow",
+  "scope": "/TaskFlow/",
   "lang": "en",
   "categories": ["productivity", "finance", "lifestyle"],
   "icons": [
@@ -25,21 +25,21 @@
       "name": "Add Task",
       "short_name": "Task",
       "description": "Quickly add a new task",
-      "url": "/index.html#tasks",
+      "url": "/TaskFlow/index.html#tasks", 
       "icons": [{ "src": "icon-96x96.png", "sizes": "96x96" }]
     },
     {
       "name": "Log Expense",
       "short_name": "Expense",
       "description": "Log a new expense",
-      "url": "/index.html#expenses",
+      "url": "/TaskFlow/index.html#expenses", 
       "icons": [{ "src": "icon-96x96.png", "sizes": "96x96" }]
     },
     {
       "name": "Log Learning",
       "short_name": "Learn",
       "description": "Log today's learning",
-      "url": "/index.html#learning",
+      "url": "/TaskFlow/index.html#learning", 
       "icons": [{ "src": "icon-96x96.png", "sizes": "96x96" }]
     }
   ]
