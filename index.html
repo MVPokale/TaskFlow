@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>TaskFlow</title>
@@ -1711,7 +1708,7 @@ function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').repl
 // =========== PWA SERVICE WORKER ===========
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
+    navigator.serviceWorker.register('/TaskFlow/sw.js')
       .then(reg => console.log('[TaskFlow] SW registered:', reg.scope))
       .catch(err => console.log('[TaskFlow] SW failed:', err));
   });
@@ -1749,6 +1746,7 @@ function dismissBanner(){
 
 // =========== INIT ===========
 load();
+window.addEventListener("beforeunload", save);
 renderTasks();renderHabits();renderExpenses();renderGroups();renderLearning();renderNotes();updateDashboard();
 </script>
 </body>
