@@ -828,7 +828,21 @@ let splitType = 'equal';
 let activeTaskFilter = 'all';
 
 function save(){try{localStorage.setItem('taskflow_v2',JSON.stringify(S));}catch(e){}}
-function load(){try{const d=localStorage.getItem('taskflow_v2');if(d)S=JSON.parse(d);}catch(e){}}
+function load(){
+  try{
+    const d=localStorage.getItem('taskflow_v2');
+    if(d){
+      S=JSON.parse(d);
+      // Ensure all arrays exist (for backward compatibility)
+      if(!S.tasks) S.tasks=[];
+      if(!S.habits) S.habits=[];
+      if(!S.expenses) S.expenses=[];
+      if(!S.groups) S.groups=[];
+      if(!S.learnings) S.learnings=[];
+      if(!S.notes) S.notes=[];
+    }
+  }catch(e){}
+}
 
 // =========== NAV ===========
 function switchPage(page){
