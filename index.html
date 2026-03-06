@@ -210,6 +210,7 @@ select.inp{cursor:pointer;}
 .habit-check-btn{padding:10px 20px;border-radius:12px;border:none;cursor:pointer;font-family:'Open Sans',sans-serif;font-size:13px;font-weight:700;transition:all .2s;}
 .habit-check-btn.unchecked{background:var(--bg3);color:var(--text2);border:1px solid var(--border2);}
 .habit-check-btn.checked{background:var(--green);color:#000;}
+.habit-check-btn.missed{background:rgba(255,69,58,.15);color:var(--red);border-color:var(--red);}
 .habit-check-btn:active{transform:scale(.95);}
 .habit-del{color:var(--text3);font-size:16px;cursor:pointer;padding:8px;border:none;background:transparent;border-radius:8px;}
 
@@ -307,23 +308,55 @@ select.inp{cursor:pointer;}
 .week-day-dot.has-entry{background:rgba(0,188,212,.15);color:var(--teal);}
 .week-day-dot.today-col{border:1px solid var(--teal);}
 .week-day-label{font-size:10px;color:var(--text3);font-family:'JetBrains Mono',monospace;}
+
+/* ===== SEARCH BAR ===== */
+.search-wrap{padding:0 16px 12px;position:relative;}
+.search-inp{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:14px;padding:12px 16px 12px 44px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;outline:none;transition:border-color .2s;}
+.search-inp:focus{border-color:var(--blue);}
+.search-inp::placeholder{color:var(--text3);}
+.search-icon{position:absolute;left:30px;top:50%;transform:translateY(-50%);font-size:16px;pointer-events:none;}
+.search-clear{position:absolute;right:28px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text3);font-size:18px;cursor:pointer;padding:4px;display:none;}
+
+/* ===== NOTE FULLSCREEN READ ===== */
+.note-reader{position:fixed;inset:0;background:var(--bg);z-index:300;display:none;flex-direction:column;}
+.note-reader.open{display:flex;}
+.note-reader-header{display:flex;align-items:center;gap:12px;padding:calc(env(safe-area-inset-top) + 14px) 20px 14px;border-bottom:1px solid var(--border);background:var(--bg2);}
+.note-reader-title{flex:1;font-family:'Open Sans',sans-serif;font-size:17px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.note-reader-body{flex:1;overflow-y:auto;padding:20px;font-size:16px;line-height:1.8;color:var(--text2);white-space:pre-wrap;word-break:break-word;}
+.note-reader-meta{padding:12px 20px calc(env(safe-area-inset-bottom)+12px);border-top:1px solid var(--border);font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace;}
+.note-reader-btn{width:40px;height:40px;border-radius:12px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;flex-shrink:0;}
+
+/* ===== EDIT HABIT / EXPENSE MODAL ===== */
+.modal-edit-badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;background:rgba(79,158,255,.12);color:var(--blue);font-family:'JetBrains Mono',monospace;margin-bottom:12px;}
+
+/* ===== SETTINGS PAGE ===== */
+.settings-section{padding:0 16px;margin-bottom:20px;}
+.settings-section-title{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;}
+.settings-row{display:flex;align-items:center;gap:14px;background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:14px 16px;margin-bottom:8px;cursor:pointer;transition:background .2s;}
+.settings-row:active{background:var(--bg3);}
+.settings-row-icon{font-size:20px;flex-shrink:0;width:36px;text-align:center;}
+.settings-row-info{flex:1;}
+.settings-row-label{font-size:15px;font-weight:600;}
+.settings-row-sub{font-size:12px;color:var(--text2);margin-top:2px;}
+.settings-row-action{color:var(--text3);font-size:14px;}
+.settings-toggle{width:46px;height:26px;border-radius:13px;background:var(--bg4);border:none;cursor:pointer;position:relative;transition:background .3s;flex-shrink:0;}
+.settings-toggle.on{background:var(--green);}
+.settings-toggle::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .3s;}
+.settings-toggle.on::after{transform:translateX(20px);}
+.settings-danger{color:var(--red)!important;}
+.settings-version{text-align:center;padding:20px;font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace;}
+
 /* end styles */
 </style>
 </head>
 <body>
-
-<div class="status-bar">
-  <span id="statusTime">9:41</span>
-  <span style="font-weight:700;color:var(--text)">TaskFlow</span>
-  <span>🔋 98%</span>
-</div>
 
 <!-- ===== DASHBOARD ===== -->
 <div class="page active" id="page-dashboard">
   <div class="app-topbar">
     <span class="app-topbar-time" id="statusTime">9:41</span>
     <span class="app-topbar-brand">TaskFlow</span>
-    <span class="app-topbar-bat">🔋 <span id="batPct">98%</span></span>
+    <div class="icon-btn" onclick="switchPage('settings')" style="width:36px;height:36px;font-size:16px;border-radius:11px;">⚙️</div>
   </div>
   <div class="dashboard-greeting">
     <h2 id="greeting">Good morning, Manish 👋</h2>
@@ -337,7 +370,7 @@ select.inp{cursor:pointer;}
   </div>
   <div class="section-label">QUICK ADD</div>
   <div class="quick-add-row">
-    <div class="quick-add-btn" onclick="openModal('modal-task')"><span class="qa-icon">📋</span>Task</div>
+    <div class="quick-add-btn" onclick="openAddTask()"><span class="qa-icon">📋</span>Task</div>
     <div class="quick-add-btn" onclick="openModal('modal-habit')"><span class="qa-icon">✅</span>Habit</div>
     <div class="quick-add-btn" onclick="openModal('modal-expense')"><span class="qa-icon">💰</span>Expense</div>
     <div class="quick-add-btn" onclick="openModal('modal-group')"><span class="qa-icon">👥</span>Group</div>
@@ -351,7 +384,7 @@ select.inp{cursor:pointer;}
 <div class="page" id="page-tasks">
   <div class="page-header">
     <div><div class="page-title">Tasks</div><div class="page-subtitle" id="task-count-label">0 pending</div></div>
-    <div class="icon-btn" onclick="openModal('modal-task')">＋</div>
+    <div style="display:flex;gap:8px;"><div class="icon-btn" onclick="switchPage('search')" style="font-size:16px;">🔍</div><div class="icon-btn" onclick="openAddTask()">＋</div></div>
   </div>
   <div class="task-filters">
     <button class="filter-pill active" onclick="setTaskFilter('all',this)">ALL</button>
@@ -361,14 +394,14 @@ select.inp{cursor:pointer;}
     <button class="filter-pill" onclick="setTaskFilter('medium',this)">🟡 MED</button>
   </div>
   <div id="taskList"></div>
-  <button class="fab" onclick="openModal('modal-task')">+</button>
+  <button class="fab" onclick="openAddTask()">+</button>
 </div>
 
 <!-- ===== HABITS ===== -->
 <div class="page" id="page-habits">
   <div class="page-header">
     <div><div class="page-title">Habits</div><div class="page-subtitle" id="habit-count-label">Build consistency</div></div>
-    <div class="icon-btn" onclick="openModal('modal-habit')">＋</div>
+    <div style="display:flex;gap:8px;"><div class="icon-btn" onclick="switchPage('search')" style="font-size:16px;">🔍</div><div class="icon-btn" onclick="openModal('modal-habit')">＋</div></div>
   </div>
   <div class="section-label">TODAY'S HABITS</div>
   <div id="habitList"></div>
@@ -379,7 +412,7 @@ select.inp{cursor:pointer;}
 <div class="page" id="page-expenses">
   <div class="page-header">
     <div><div class="page-title">Expenses</div><div class="page-subtitle">Track every rupee</div></div>
-    <div class="icon-btn" onclick="openModal('modal-expense')">＋</div>
+    <div style="display:flex;gap:8px;"><div class="icon-btn" onclick="switchPage('search')" style="font-size:16px;">🔍</div><div class="icon-btn" onclick="openModal('modal-expense')">＋</div></div>
   </div>
   <div class="month-selector">
     <div class="month-nav" onclick="changeMonth(-1)">‹</div>
@@ -432,6 +465,105 @@ select.inp{cursor:pointer;}
   <button class="fab" onclick="openModal('modal-learning')">+</button>
 </div>
 
+<!-- ===== NOTES ===== -->
+<div class="page" id="page-notes">
+  <div class="page-header">
+    <div><div class="page-title">Notes</div><div class="page-subtitle" id="notes-count-label">Your micro notepad</div></div>
+    <div style="display:flex;gap:8px;"><div class="icon-btn" onclick="switchPage('search')" style="font-size:16px;">🔍</div><div class="icon-btn" onclick="openNoteModal()">＋</div></div>
+  </div>
+  <div id="notesList"></div>
+  <button class="fab" onclick="openNoteModal()">+</button>
+</div>
+
+<!-- ===== SEARCH ===== -->
+<div class="page" id="page-search">
+  <div class="page-header">
+    <div><div class="page-title">Search</div><div class="page-subtitle" id="search-result-label">Find anything</div></div>
+  </div>
+  <div class="search-wrap" style="padding-top:0">
+    <span class="search-icon">🔍</span>
+    <input class="search-inp" id="global-search" placeholder="Search tasks, expenses, notes..." oninput="doSearch(this.value)">
+    <button class="search-clear" id="search-clear-btn" onclick="clearSearch()">✕</button>
+  </div>
+  <div id="searchResults"></div>
+</div>
+
+<!-- ===== SETTINGS ===== -->
+<div class="page" id="page-settings">
+  <div class="page-header">
+    <div><div class="page-title">Settings</div><div class="page-subtitle">App preferences</div></div>
+  </div>
+  <div class="settings-section">
+    <div class="settings-section-title">DATA</div>
+    <div class="settings-row" onclick="exportData()">
+      <span class="settings-row-icon">📤</span>
+      <div class="settings-row-info"><div class="settings-row-label">Export Backup</div><div class="settings-row-sub">Download all data as JSON</div></div>
+      <span class="settings-row-action">›</span>
+    </div>
+    <div class="settings-row" onclick="document.getElementById('import-file').click()">
+      <span class="settings-row-icon">📥</span>
+      <div class="settings-row-info"><div class="settings-row-label">Import Backup</div><div class="settings-row-sub">Restore from JSON file</div></div>
+      <span class="settings-row-action">›</span>
+    </div>
+    <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(event)">
+  </div>
+  <div class="settings-section">
+    <div class="settings-section-title">NOTIFICATIONS</div>
+    <div class="settings-row" onclick="toggleNotifSetting(this)">
+      <span class="settings-row-icon">🔔</span>
+      <div class="settings-row-info"><div class="settings-row-label">Daily Reminders</div><div class="settings-row-sub">Remind to log habits & learning</div></div>
+      <button class="settings-toggle" id="notif-toggle" onclick="event.stopPropagation();toggleNotifSetting(this.closest('.settings-row'))"></button>
+    </div>
+    <div class="settings-row" onclick="requestOverdueNotif()">
+      <span class="settings-row-icon">⏰</span>
+      <div class="settings-row-info"><div class="settings-row-label">Overdue Task Alerts</div><div class="settings-row-sub">Alert for tasks past due date</div></div>
+      <span class="settings-row-action">›</span>
+    </div>
+  </div>
+  <div class="settings-section">
+    <div class="settings-section-title">APPEARANCE</div>
+    <div class="settings-row">
+      <span class="settings-row-icon">🌙</span>
+      <div class="settings-row-info"><div class="settings-row-label">Theme</div><div class="settings-row-sub">Dark mode (default)</div></div>
+      <span class="settings-row-action" style="font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--blue)">DARK</span>
+    </div>
+    <div class="settings-row" onclick="changeUserName()">
+      <span class="settings-row-icon">👤</span>
+      <div class="settings-row-info"><div class="settings-row-label">Your Name</div><div class="settings-row-sub" id="settings-name-sub">Manish</div></div>
+      <span class="settings-row-action">›</span>
+    </div>
+  </div>
+  <div class="settings-section">
+    <div class="settings-section-title">ABOUT</div>
+    <div class="settings-row">
+      <span class="settings-row-icon">📱</span>
+      <div class="settings-row-info"><div class="settings-row-label">TaskFlow</div><div class="settings-row-sub">Personal Life Manager</div></div>
+      <span class="settings-row-action" style="font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--text3)">v7.0</span>
+    </div>
+  </div>
+  <div class="settings-section">
+    <div class="settings-section-title">DANGER ZONE</div>
+    <div class="settings-row" onclick="clearAllData()">
+      <span class="settings-row-icon">🗑️</span>
+      <div class="settings-row-info"><div class="settings-row-label settings-danger">Clear All Data</div><div class="settings-row-sub">Permanently delete everything</div></div>
+      <span class="settings-row-action">›</span>
+    </div>
+  </div>
+  <div class="settings-version">TaskFlow v7.0 · Built for Manish 💙</div>
+</div>
+
+<!-- NOTE FULLSCREEN READER -->
+<div class="note-reader" id="note-reader">
+  <div class="note-reader-header">
+    <div class="note-reader-btn" onclick="closeNoteReader()">‹</div>
+    <div class="note-reader-title" id="nr-title">Note</div>
+    <div class="note-reader-btn" onclick="editFromReader()" style="color:var(--blue)">✏️</div>
+    <div class="note-reader-btn" onclick="deleteFromReader()" style="color:var(--red)">🗑</div>
+  </div>
+  <div class="note-reader-body" id="nr-body"></div>
+  <div class="note-reader-meta" id="nr-meta"></div>
+</div>
+
 <!-- INSTALL BANNER -->
 <div id="install-banner" style="display:none;position:fixed;bottom:90px;left:50%;transform:translateX(-50%);width:calc(100% - 32px);max-width:398px;background:#0f1a2a;border:1px solid #4f9eff;border-radius:16px;padding:12px 16px;z-index:150;align-items:center;gap:12px;box-shadow:0 4px 24px rgba(79,158,255,.2);">
   <div style="font-size:1.6rem">📱</div>
@@ -451,22 +583,67 @@ select.inp{cursor:pointer;}
   <div class="nav-item" onclick="switchPage('expenses')" id="nav-expenses"><div class="nav-dot"></div><div class="nav-icon">💸</div><div class="nav-label">EXPENSES</div></div>
   <div class="nav-item" onclick="switchPage('groups')" id="nav-groups"><div class="nav-dot"></div><div class="nav-icon">👥</div><div class="nav-label">GROUPS</div></div>
   <div class="nav-item" onclick="switchPage('learning')" id="nav-learning"><div class="nav-dot"></div><div class="nav-icon">📚</div><div class="nav-label">LEARN</div></div>
+  <div class="nav-item" onclick="switchPage('notes')" id="nav-notes"><div class="nav-dot"></div><div class="nav-icon">📝</div><div class="nav-label">NOTES</div></div>
 </nav>
 
 <!-- ===== MODALS ===== -->
 
-<!-- TASK -->
+<!-- HABIT EDIT -->
+<div class="modal-overlay" id="modal-habit-edit" onclick="if(event.target===this)closeModal('modal-habit-edit')">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Edit Habit</div>
+    <input type="hidden" id="he-id">
+    <div class="inp-row">
+      <input class="inp" id="he-emoji" placeholder="🎯" style="max-width:72px;text-align:center;">
+      <input class="inp" id="he-name" placeholder="Habit name...">
+    </div>
+    <div class="inp-row">
+      <select class="inp" id="he-freq"><option value="daily">Daily</option><option value="weekdays">Weekdays</option><option value="weekends">Weekends</option></select>
+      <select class="inp" id="he-color"><option value="green">🟢 Green</option><option value="blue">🔵 Blue</option><option value="orange">🟠 Orange</option><option value="purple">🟣 Purple</option></select>
+    </div>
+    <button class="btn btn-primary" onclick="saveHabitEdit()">Save Changes</button>
+  </div>
+</div>
+
+<!-- EXPENSE EDIT -->
+<div class="modal-overlay" id="modal-expense-edit" onclick="if(event.target===this)closeModal('modal-expense-edit')">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Edit Expense</div>
+    <input type="hidden" id="ee-id">
+    <div class="modal-row"><input class="inp" id="ee-name" placeholder="Description"></div>
+    <div class="inp-row">
+      <input class="inp" id="ee-amount" type="number" placeholder="₹ Amount">
+      <select class="inp" id="ee-cat">
+        <option value="food">🍔 Food</option><option value="travel">🚗 Travel</option>
+        <option value="shopping">🛍️ Shopping</option><option value="bills">📄 Bills</option>
+        <option value="rent">🏠 Rent</option>
+        <option value="health">💊 Health</option><option value="entertainment">🎬 Entertain</option>
+        <option value="other">📦 Other</option>
+      </select>
+    </div>
+    <div class="inp-row">
+      <input type="date" class="inp" id="ee-date">
+      <select class="inp" id="ee-paymode"><option>UPI</option><option>Cash</option><option>Card</option><option>NetBanking</option></select>
+    </div>
+    <button class="btn btn-primary" onclick="saveExpenseEdit()">Save Changes</button>
+  </div>
+</div>
+
+<!-- TASK (add / edit) -->
 <div class="modal-overlay" id="modal-task" onclick="if(event.target===this)closeModal('modal-task')">
   <div class="modal">
     <div class="modal-handle"></div>
-    <div class="modal-title">New Task</div>
+    <div class="modal-title" id="task-modal-title">New Task</div>
     <div class="modal-row"><input class="inp" id="t-name" placeholder="Task title..."></div>
     <div class="inp-row">
       <select class="inp" id="t-priority"><option value="high">🔴 High</option><option value="medium" selected>🟡 Medium</option><option value="low">🟢 Low</option></select>
       <input type="date" class="inp" id="t-due">
     </div>
     <div class="modal-row"><input class="inp" id="t-note" placeholder="Note (optional)"></div>
-    <button class="btn btn-primary" onclick="addTask()">Add Task</button>
+    <input type="hidden" id="t-edit-id" value="">
+    <button class="btn btn-primary" id="task-save-btn" onclick="saveTask()">Add Task</button>
   </div>
 </div>
 
@@ -498,6 +675,7 @@ select.inp{cursor:pointer;}
       <select class="inp" id="e-cat">
         <option value="food">🍔 Food</option><option value="travel">🚗 Travel</option>
         <option value="shopping">🛍️ Shopping</option><option value="bills">📄 Bills</option>
+        <option value="rent">🏠 Rent</option>
         <option value="health">💊 Health</option><option value="entertainment">🎬 Entertain</option>
         <option value="other">📦 Other</option>
       </select>
@@ -593,6 +771,18 @@ select.inp{cursor:pointer;}
   </div>
 </div>
 
+<!-- NOTES -->
+<div class="modal-overlay" id="modal-notes" onclick="if(event.target===this)closeModal('modal-notes')">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="note-modal-title">New Note</div>
+    <div class="modal-row"><input class="inp" id="n-title" placeholder="Title (optional)..."></div>
+    <div class="modal-row"><textarea class="inp" id="n-body" rows="6" placeholder="Write your note here..."></textarea></div>
+    <input type="hidden" id="n-edit-id" value="">
+    <button class="btn btn-primary" id="note-save-btn" onclick="saveNote()">Save Note</button>
+  </div>
+</div>
+
 <!-- LEARNING -->
 <div class="modal-overlay" id="modal-learning" onclick="if(event.target===this)closeModal('modal-learning')">
   <div class="modal">
@@ -633,7 +823,7 @@ select.inp{cursor:pointer;}
 
 <script>
 // =========== STATE ===========
-let S = {tasks:[],habits:[],expenses:[],groups:[],learnings:[]};
+let S = {tasks:[],habits:[],expenses:[],groups:[],learnings:[],notes:[]};
 let currentMonth = new Date().getMonth();
 let currentYear = new Date().getFullYear();
 let activeSplitGroupId = null;
@@ -666,12 +856,18 @@ function openModal(id){
 function closeModal(id){document.getElementById(id).classList.remove('open');}
 
 // =========== CLOCK ===========
+// Load saved username
+(function(){const n=localStorage.getItem('tf_username');if(n){document.getElementById('settings-name-sub').textContent=n;}})();
+// Load notif setting
+(function(){const v=localStorage.getItem('tf_notif');if(v==='1'){notifEnabled=true;document.getElementById('notif-toggle').classList.add('on');}})();
+
 function updateClock(){
   const n=new Date(),h=n.getHours().toString().padStart(2,'0'),m=n.getMinutes().toString().padStart(2,'0');
   document.getElementById('statusTime').textContent=h+':'+m;
   const hr=n.getHours();
   const greet=hr<12?'Good morning':hr<17?'Good afternoon':'Good evening';
-  document.getElementById('greeting').textContent=greet+', Manish 👋';
+  const uname=localStorage.getItem('tf_username')||'Manish';
+  document.getElementById('greeting').textContent=greet+', '+uname+' 👋';
 }
 setInterval(updateClock,15000);updateClock();
 const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -681,12 +877,37 @@ document.getElementById('dashDate').textContent=days[now.getDay()]+', '+monthNam
 document.getElementById('currentMonthLabel').textContent=monthNames[currentMonth]+' '+currentYear;
 
 // =========== TASKS ===========
-function addTask(){
+function openAddTask(){
+  document.getElementById('task-modal-title').textContent='New Task';
+  document.getElementById('task-save-btn').textContent='Add Task';
+  document.getElementById('t-edit-id').value='';
+  ['t-name','t-note'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('t-priority').value='medium';
+  document.getElementById('t-due').value='';
+  openModal('modal-task');
+}
+function openEditTask(id){
+  const t=S.tasks.find(x=>x.id===id);if(!t||t.done)return;
+  document.getElementById('task-modal-title').textContent='Edit Task';
+  document.getElementById('task-save-btn').textContent='Save Changes';
+  document.getElementById('t-edit-id').value=id;
+  document.getElementById('t-name').value=t.name;
+  document.getElementById('t-priority').value=t.priority;
+  document.getElementById('t-due').value=t.due||'';
+  document.getElementById('t-note').value=t.note||'';
+  document.getElementById('modal-task').classList.add('open');
+}
+function saveTask(){
   const name=document.getElementById('t-name').value.trim();
   if(!name)return;
-  S.tasks.unshift({id:Date.now(),name,priority:document.getElementById('t-priority').value,due:document.getElementById('t-due').value,note:document.getElementById('t-note').value.trim(),done:false,created:new Date().toISOString()});
+  const editId=document.getElementById('t-edit-id').value;
+  if(editId){
+    const t=S.tasks.find(x=>x.id===parseInt(editId));
+    if(t){t.name=name;t.priority=document.getElementById('t-priority').value;t.due=document.getElementById('t-due').value;t.note=document.getElementById('t-note').value.trim();}
+  } else {
+    S.tasks.unshift({id:Date.now(),name,priority:document.getElementById('t-priority').value,due:document.getElementById('t-due').value,note:document.getElementById('t-note').value.trim(),done:false,created:new Date().toISOString()});
+  }
   save();renderTasks();updateDashboard();closeModal('modal-task');
-  ['t-name','t-note'].forEach(id=>document.getElementById(id).value='');
 }
 function toggleTask(id){const t=S.tasks.find(x=>x.id===id);if(t){t.done=!t.done;save();renderTasks();updateDashboard();}}
 function deleteTask(id){S.tasks=S.tasks.filter(x=>x.id!==id);save();renderTasks();updateDashboard();}
@@ -717,6 +938,7 @@ function renderTasks(){
         ${t.note?`<span style="font-size:.7rem;color:var(--text3)">${esc(t.note)}</span>`:''}
       </div>
     </div>
+    ${!t.done?`<button class="task-del-btn" title="Edit" onclick="openEditTask(${t.id})" style="color:var(--blue)">✏️</button>`:''}
     <button class="task-del-btn" onclick="deleteTask(${t.id})">✕</button>`;
     list.appendChild(el);
   });
@@ -740,6 +962,20 @@ function toggleHabit(id){
   const idx=h.completions.indexOf(today);
   if(idx>=0){h.completions.splice(idx,1);if(h.streak>0)h.streak--;}
   else{h.completions.push(today);h.streak++;}
+  // remove from misses if marking done
+  if(!h.misses)h.misses=[];
+  h.misses=h.misses.filter(m=>m!==today);
+  save();renderHabits();updateDashboard();
+}
+function markHabitMiss(id){
+  const h=S.habits.find(x=>x.id===id);if(!h)return;
+  const today=new Date().toISOString().split('T')[0];
+  if(!h.misses)h.misses=[];
+  // if already done today, undo done first
+  const idx=h.completions.indexOf(today);
+  if(idx>=0){h.completions.splice(idx,1);if(h.streak>0)h.streak--;}
+  // record miss (no streak increase)
+  if(!h.misses.includes(today))h.misses.push(today);
   save();renderHabits();updateDashboard();
 }
 function deleteHabit(id){S.habits=S.habits.filter(x=>x.id!==id);save();renderHabits();updateDashboard();}
@@ -753,6 +989,7 @@ function renderHabits(){
   list.innerHTML='';
   S.habits.forEach(h=>{
     const isToday=h.completions.includes(today);
+    const isMiss=Array.isArray(h.misses)&&h.misses.includes(today);
     const col=colorMap[h.color]||'var(--green)';const bg=colorBg[h.color]||'rgba(61,220,132,.1)';
     let dots='';
     for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const ds=d.toISOString().split('T')[0];dots+=`<div class="day-dot ${h.completions.includes(ds)?'done':''} ${i===0&&!h.completions.includes(ds)?'today-dot':''}"></div>`;}
@@ -761,12 +998,16 @@ function renderHabits(){
       <div class="habit-emoji" style="background:${bg}">${h.emoji}</div>
       <div class="habit-info"><div class="habit-name">${esc(h.name)}</div><div class="habit-freq">${h.freq}</div></div>
       <div class="habit-streak">🔥 ${h.streak}</div>
+      <button class="habit-del" onclick="openEditHabit(${h.id})" style="color:var(--blue)">✏️</button>
       <button class="habit-del" onclick="deleteHabit(${h.id})">✕</button>
     </div>
     <div class="habit-days">${dots}</div>
     <div class="habit-bottom">
       <span style="font-size:.68rem;color:var(--text3);font-family:'JetBrains Mono',monospace">LAST 7 DAYS</span>
-      <button class="habit-check-btn ${isToday?'checked':'unchecked'}" onclick="toggleHabit(${h.id})">${isToday?'✓ Done Today':'Mark Done'}</button>
+      <div style="display:flex;gap:6px;">
+        <button class="habit-check-btn ${isToday?'checked':'unchecked'}" onclick="toggleHabit(${h.id})">${isToday?'✓ Done':'✓ Done'}</button>
+        <button class="habit-check-btn ${isMiss?'missed':'unchecked'}" onclick="markHabitMiss(${h.id})" style="${isMiss?'background:rgba(255,69,58,.15);color:var(--red);border-color:var(--red);':''}">${isMiss?'✗ Missed':'✗ No'}</button>
+      </div>
     </div>`;
     list.appendChild(el);
   });
@@ -778,6 +1019,7 @@ const catCfg={
   travel:{icon:'🚗',color:'var(--blue)',bg:'rgba(79,158,255,.12)'},
   shopping:{icon:'🛍️',color:'var(--pink)',bg:'rgba(255,107,157,.12)'},
   bills:{icon:'📄',color:'var(--text2)',bg:'rgba(153,153,153,.1)'},
+  rent:{icon:'🏠',color:'var(--teal)',bg:'rgba(0,188,212,.12)'},
   health:{icon:'💊',color:'var(--green)',bg:'rgba(61,220,132,.12)'},
   entertainment:{icon:'🎬',color:'var(--purple)',bg:'rgba(187,134,252,.12)'},
   other:{icon:'📦',color:'var(--text2)',bg:'rgba(153,153,153,.1)'}
@@ -823,6 +1065,7 @@ function renderExpenses(){
       <div class="expense-meta">${new Date(e.date).toLocaleDateString('en-IN',{day:'numeric',month:'short'})} · ${e.paymode} · ${e.category}</div>
     </div>
     <div class="expense-amount" style="color:${cfg.color}">₹${e.amount.toLocaleString('en-IN')}</div>
+    <button class="expense-del" onclick="openEditExpense(${e.id})" style="color:var(--blue)">✏️</button>
     <button class="expense-del" onclick="deleteExpense(${e.id})">✕</button>`;
     list.appendChild(el);
   });
@@ -1213,6 +1456,64 @@ function renderLearning(){
   });
 }
 
+// =========== NOTES ===========
+function openNoteModal(editId){
+  if(editId){
+    const n=S.notes.find(x=>x.id===editId);if(!n)return;
+    document.getElementById('note-modal-title').textContent='Edit Note';
+    document.getElementById('note-save-btn').textContent='Save Changes';
+    document.getElementById('n-edit-id').value=editId;
+    document.getElementById('n-title').value=n.title||'';
+    document.getElementById('n-body').value=n.body||'';
+  } else {
+    document.getElementById('note-modal-title').textContent='New Note';
+    document.getElementById('note-save-btn').textContent='Save Note';
+    document.getElementById('n-edit-id').value='';
+    document.getElementById('n-title').value='';
+    document.getElementById('n-body').value='';
+  }
+  document.getElementById('modal-notes').classList.add('open');
+}
+function saveNote(){
+  const body=document.getElementById('n-body').value.trim();
+  if(!body)return;
+  const title=document.getElementById('n-title').value.trim();
+  const editId=parseInt(document.getElementById('n-edit-id').value);
+  if(editId){
+    const n=S.notes.find(x=>x.id===editId);
+    if(n){n.title=title;n.body=body;n.updated=new Date().toISOString();}
+  } else {
+    S.notes.unshift({id:Date.now(),title,body,created:new Date().toISOString(),updated:new Date().toISOString()});
+  }
+  save();renderNotes();closeModal('modal-notes');
+}
+function deleteNote(id){S.notes=S.notes.filter(x=>x.id!==id);save();renderNotes();}
+function renderNotes(){
+  const list=document.getElementById('notesList');
+  document.getElementById('notes-count-label').textContent=S.notes.length+' note'+(S.notes.length!==1?'s':'');
+  if(!S.notes.length){list.innerHTML='<div class="empty-state"><span class="empty-icon">📝</span>No notes yet.<br>Tap + to write one!</div>';return;}
+  list.innerHTML='';
+  S.notes.forEach(n=>{
+    const preview=n.title||(n.body.slice(0,60)+(n.body.length>60?'…':''));
+    const sub=n.title?n.body.slice(0,50)+(n.body.length>50?'…':''):'';
+    const date=new Date(n.updated).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+    const el=document.createElement('div');el.className='task-item';
+    el.style.cssText='cursor:pointer;flex-direction:column;align-items:flex-start;gap:6px;';
+    el.innerHTML=`<div style="display:flex;width:100%;align-items:flex-start;gap:10px;">
+      <div style="font-size:1.1rem;margin-top:2px;">📝</div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:15px;font-weight:600;line-height:1.3;">${esc(preview)}</div>
+        ${sub?`<div style="font-size:12px;color:var(--text2);margin-top:2px;">${esc(sub)}</div>`:''}
+        <div style="font-size:11px;color:var(--text3);margin-top:4px;font-family:'JetBrains Mono',monospace">${date}</div>
+      </div>
+      <button class="task-del-btn" title="Edit" onclick="event.stopPropagation();openNoteModal(${n.id})" style="color:var(--blue)">✏️</button>
+      <button class="task-del-btn" onclick="event.stopPropagation();deleteNote(${n.id})">✕</button>
+    </div>`;
+    el.addEventListener('click',()=>openNoteReader(n.id));
+    list.appendChild(el);
+  });
+}
+
 // =========== DASHBOARD ===========
 function updateDashboard(){
   const today=new Date().toISOString().split('T')[0];
@@ -1235,6 +1536,173 @@ function updateDashboard(){
   ];
   if(!items.length){recent.innerHTML='<div class="empty-state" style="padding:20px 0"><span class="empty-icon">📊</span>No activity yet. Start adding!</div>';return;}
   recent.innerHTML=items.map(i=>`<div class="recent-item"><div class="recent-dot" style="background:${i.color}"></div><div class="recent-text">${esc(i.text)}<span>${i.sub}</span></div><div class="recent-val">${i.val}</div></div>`).join('');
+}
+
+
+// =========== SEARCH ===========
+function doSearch(q){
+  const btn=document.getElementById('search-clear-btn');
+  btn.style.display=q?'block':'none';
+  const res=document.getElementById('searchResults');
+  const lbl=document.getElementById('search-result-label');
+  if(!q.trim()){res.innerHTML='<div class="empty-state"><span class="empty-icon">🔍</span>Type to search tasks,<br>expenses and notes</div>';lbl.textContent='Find anything';return;}
+  const ql=q.toLowerCase();
+  const results=[];
+  S.tasks.forEach(t=>{if(t.name.toLowerCase().includes(ql)||( t.note&&t.note.toLowerCase().includes(ql)))results.push({type:'task',icon:'📋',color:'var(--blue)',title:t.name,sub:'Task · '+pLabel[t.priority]+(t.done?' · ✓ Done':''),id:t.id});});
+  S.expenses.forEach(e=>{if(e.name.toLowerCase().includes(ql))results.push({type:'expense',icon:'💸',color:'var(--orange)',title:e.name,sub:'Expense · ₹'+e.amount+' · '+e.category,id:e.id});});
+  S.notes.forEach(n=>{if((n.title&&n.title.toLowerCase().includes(ql))||n.body.toLowerCase().includes(ql))results.push({type:'note',icon:'📝',color:'var(--teal)',title:n.title||n.body.slice(0,40),sub:'Note · '+new Date(n.updated).toLocaleDateString('en-IN',{day:'numeric',month:'short'}),id:n.id});});
+  S.habits.forEach(hb=>{if(hb.name.toLowerCase().includes(ql))results.push({type:'habit',icon:'🔥',color:'var(--green)',title:hb.name,sub:'Habit · 🔥'+hb.streak+' streak',id:hb.id});});
+  S.learnings.forEach(l=>{if(l.topic.toLowerCase().includes(ql)||(l.notes&&l.notes.toLowerCase().includes(ql)))results.push({type:'learning',icon:'📚',color:'var(--purple)',title:l.topic,sub:'Learning · '+l.date,id:l.id});});
+  lbl.textContent=results.length+' result'+(results.length!==1?'s':'');
+  if(!results.length){res.innerHTML='<div class="empty-state"><span class="empty-icon">🔍</span>No results for "'+esc(q)+'"</div>';return;}
+  res.innerHTML='';
+  results.forEach(r=>{
+    const el=document.createElement('div');el.className='task-item';el.style.cursor='pointer';
+    el.innerHTML=`<div style="width:36px;height:36px;border-radius:10px;background:rgba(0,0,0,.2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">${r.icon}</div>
+    <div style="flex:1;min-width:0;"><div style="font-size:15px;font-weight:500;">${esc(r.title)}</div><div style="font-size:11px;color:var(--text2);margin-top:2px;font-family:'JetBrains Mono',monospace">${r.sub}</div></div>
+    <div style="font-size:11px;color:${r.color};font-family:'JetBrains Mono',monospace;text-transform:uppercase;">${r.type}</div>`;
+    el.onclick=()=>{
+      if(r.type==='note')openNoteReader(r.id);
+      else if(r.type==='task'){switchPage('tasks');}
+      else if(r.type==='expense'){switchPage('expenses');}
+      else if(r.type==='habit'){switchPage('habits');}
+      else if(r.type==='learning'){switchPage('learning');}
+    };
+    res.appendChild(el);
+  });
+}
+function clearSearch(){document.getElementById('global-search').value='';doSearch('');}
+
+// =========== NOTE READER (FULLSCREEN) ===========
+let activeReadNoteId=null;
+function openNoteReader(id){
+  const n=S.notes.find(x=>x.id===id);if(!n)return;
+  activeReadNoteId=id;
+  document.getElementById('nr-title').textContent=n.title||'Note';
+  document.getElementById('nr-body').textContent=n.body;
+  document.getElementById('nr-meta').textContent='Created '+new Date(n.created).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})+' · Updated '+new Date(n.updated).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+  document.getElementById('note-reader').classList.add('open');
+}
+function closeNoteReader(){document.getElementById('note-reader').classList.remove('open');activeReadNoteId=null;}
+function editFromReader(){if(activeReadNoteId){const id=activeReadNoteId;closeNoteReader();openNoteModal(id);}}
+function deleteFromReader(){if(activeReadNoteId&&confirm('Delete this note?')){deleteNote(activeReadNoteId);closeNoteReader();}}
+
+// =========== EDIT HABIT ===========
+function openEditHabit(id){
+  const h=S.habits.find(x=>x.id===id);if(!h)return;
+  document.getElementById('he-id').value=id;
+  document.getElementById('he-name').value=h.name;
+  document.getElementById('he-emoji').value=h.emoji||'';
+  document.getElementById('he-freq').value=h.freq;
+  document.getElementById('he-color').value=h.color;
+  document.getElementById('modal-habit-edit').classList.add('open');
+}
+function saveHabitEdit(){
+  const id=parseInt(document.getElementById('he-id').value);
+  const hb=S.habits.find(x=>x.id===id);if(!hb)return;
+  const name=document.getElementById('he-name').value.trim();if(!name)return;
+  hb.name=name;hb.emoji=document.getElementById('he-emoji').value.trim()||hb.emoji;
+  hb.freq=document.getElementById('he-freq').value;hb.color=document.getElementById('he-color').value;
+  save();renderHabits();closeModal('modal-habit-edit');
+}
+
+// =========== EDIT EXPENSE ===========
+function openEditExpense(id){
+  const e=S.expenses.find(x=>x.id===id);if(!e)return;
+  document.getElementById('ee-id').value=id;
+  document.getElementById('ee-name').value=e.name;
+  document.getElementById('ee-amount').value=e.amount;
+  document.getElementById('ee-cat').value=e.category;
+  document.getElementById('ee-date').value=e.date;
+  document.getElementById('ee-paymode').value=e.paymode;
+  document.getElementById('modal-expense-edit').classList.add('open');
+}
+function saveExpenseEdit(){
+  const id=parseInt(document.getElementById('ee-id').value);
+  const e=S.expenses.find(x=>x.id===id);if(!e)return;
+  const name=document.getElementById('ee-name').value.trim();
+  const amount=parseFloat(document.getElementById('ee-amount').value);
+  if(!name||!amount||amount<=0)return;
+  e.name=name;e.amount=amount;e.category=document.getElementById('ee-cat').value;
+  e.date=document.getElementById('ee-date').value;e.paymode=document.getElementById('ee-paymode').value;
+  save();renderExpenses();updateDashboard();closeModal('modal-expense-edit');
+}
+
+// =========== SETTINGS ===========
+function exportData(){
+  const json=JSON.stringify(S,null,2);
+  const blob=new Blob([json],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='TaskFlow_Backup_'+new Date().toISOString().split('T')[0]+'.json';a.click();
+}
+function importData(evt){
+  const file=evt.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      const data=JSON.parse(e.target.result);
+      if(data.tasks&&data.habits&&data.expenses){
+        if(confirm('This will replace ALL current data. Continue?')){
+          S=data;if(!S.notes)S.notes=[];
+          save();renderTasks();renderHabits();renderExpenses();renderGroups();renderLearning();renderNotes();updateDashboard();
+          alert('✅ Data imported successfully!');
+        }
+      } else {alert('Invalid backup file.');}
+    }catch{alert('Could not read file.');}
+  };
+  reader.readAsText(file);
+  evt.target.value='';
+}
+function clearAllData(){
+  if(confirm('Delete ALL data permanently? This cannot be undone.')){
+    if(confirm('Are you sure? ALL tasks, habits, expenses, notes will be deleted.')){
+      S={tasks:[],habits:[],expenses:[],groups:[],learnings:[],notes:[]};
+      save();renderTasks();renderHabits();renderExpenses();renderGroups();renderLearning();renderNotes();updateDashboard();
+      alert('All data cleared.');
+    }
+  }
+}
+function changeUserName(){
+  const name=prompt('Enter your name:','Manish');
+  if(name&&name.trim()){
+    const n=name.trim();
+    document.getElementById('settings-name-sub').textContent=n;
+    localStorage.setItem('tf_username',n);
+    document.getElementById('greeting').textContent=(()=>{const hr=new Date().getHours();return(hr<12?'Good morning':hr<17?'Good afternoon':'Good evening')+', '+n+' 👋';})();
+  }
+}
+
+// Notifications
+let notifEnabled=false;
+function toggleNotifSetting(row){
+  const toggle=document.getElementById('notif-toggle');
+  if(!notifEnabled){
+    Notification.requestPermission().then(p=>{
+      if(p==='granted'){
+        notifEnabled=true;toggle.classList.add('on');
+        localStorage.setItem('tf_notif','1');
+        scheduleNotifications();
+      } else {alert('Please enable notifications in your browser settings.');}
+    });
+  } else {
+    notifEnabled=false;toggle.classList.remove('on');
+    localStorage.setItem('tf_notif','0');
+  }
+}
+function requestOverdueNotif(){
+  const overdue=S.tasks.filter(t=>!t.done&&t.due&&new Date(t.due)<new Date());
+  if(!overdue.length){alert('✅ No overdue tasks!');return;}
+  Notification.requestPermission().then(p=>{
+    if(p==='granted'){
+      overdue.forEach(t=>{new Notification('⚠️ Overdue Task',{body:t.name+' was due '+t.due,icon:'/icon-192x192.png'});});
+    }
+  });
+}
+function scheduleNotifications(){
+  if(!notifEnabled||Notification.permission!=='granted')return;
+  const today=new Date().toISOString().split('T')[0];
+  const pendingHabits=S.habits.filter(h=>!h.completions.includes(today));
+  if(pendingHabits.length){new Notification('📋 TaskFlow Reminder',{body:pendingHabits.length+' habit'+(pendingHabits.length>1?'s':'')+' pending today!',icon:'/icon-192x192.png'});}
 }
 
 // =========== UTILS ===========
@@ -1281,7 +1749,7 @@ function dismissBanner(){
 
 // =========== INIT ===========
 load();
-renderTasks();renderHabits();renderExpenses();renderGroups();renderLearning();updateDashboard();
+renderTasks();renderHabits();renderExpenses();renderGroups();renderLearning();renderNotes();updateDashboard();
 </script>
 </body>
 </html>
